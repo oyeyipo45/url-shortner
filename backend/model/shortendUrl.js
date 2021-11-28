@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import shortid from 'shortid';
+import shortId from 'shortid';
 
 
 const UrlSchema = mongoose.Schema(
@@ -12,7 +12,7 @@ const UrlSchema = mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      default: shortid.generate,
+      default: shortId.generate,
     },
     clicks: {
       type: Number,

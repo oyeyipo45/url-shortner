@@ -1,11 +1,15 @@
 import './App.css';
-import Home from './Home';
+import React, { Suspense } from 'react';
+import  MyErrorBoundary  from './component/MyErrorBoundary.js';
+const Home = React.lazy(() => import('./Home'));
 
 function App() {
   return (
-    <div className="App">
-      <Home />
-    </div>
+    <MyErrorBoundary>
+      <Suspense fallback={<div>Loading . . . </div>}>
+        <Home />
+      </Suspense>
+    </MyErrorBoundary>
   );
 }
 

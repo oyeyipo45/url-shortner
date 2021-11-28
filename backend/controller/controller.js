@@ -14,21 +14,19 @@ export const home = asyncHandler(async (req, res) => {
 export const shortenUrl = asyncHandler(async (req, res) => {
 
   const longUrl = req.body.longUrl
-  const shortenedUrl = req.body.shortenedUrl;
-  const clicks = req.body.clicks;
+
+  console.log(longUrl)
 
   try {
-    const url = await Url.create({
-     longUrl ,
-     shortenedUrl ,
-     clicks 
-    });
+    // const url = await Url.create({
+    //  longUrl 
+    // });
     
     //res.redirect('/')
 
     res.json({
       message: "success",
-      data : url
+     // data : url
     })
     
   } catch (error) {
