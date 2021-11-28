@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { shortenUrl, selectUrl } from './urlSlice';
+import { shortenUrl, selectUrl, getUrls } from './redux/urlSlice.js';
 
 
 
 const Home = () => {
     const [url, setUrl] = useState('');
     const stateUrl = useSelector(selectUrl);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  
+  console.log(stateUrl, 'stateUrl');
 
+  useEffect(() => {
+    dispatch(getUrls())
+    return () => {
+    }
+  }, [dispatch])
   console.log(url, 'url');
   const submitHandler = async (url) => {
     const data = {
