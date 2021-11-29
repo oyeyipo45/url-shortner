@@ -1,15 +1,18 @@
 import './App.css';
 import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import  MyErrorBoundary  from './component/MyErrorBoundary.js';
-const Home = React.lazy(() => import('./Home'));
+import Loader from './component/Loader.js';
+import Home from './Home.js';
+import RedirectPage from './RedirectPage.js';
 
 function App() {
   return (
-    <MyErrorBoundary>
-      <Suspense fallback={<div>Loading . . . </div>}>
-        <Home />
-      </Suspense>
-    </MyErrorBoundary>
+    <Router>
+      <MyErrorBoundary>
+          <Home />
+      </MyErrorBoundary>
+    </Router>
   );
 }
 

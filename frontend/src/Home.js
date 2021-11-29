@@ -2,30 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Message from './component/Message.js';
 import Loader from './component/Loader.js';
-import { shortenUrl } from './redux/actions.js';
+import { redirectUrl, shortenUrl } from './redux/actions.js';
 
 
 
-const Home = () => {
-    const [url, setUrl] = useState('');
+const Home = ({ match}) => {
+  const [url, setUrl] = useState('');
+   const [shortUrl, setShortUrl] = useState('');
   const dispatch = useDispatch();
   const urlState = useSelector((state) => state.shortenedUrl);
+  const redirectState = useSelector((state) => state.redirect);
   const [message, setMessage] = useState(null);
   const { shortenedUrl, loading, error } = urlState;
-  
-  //console.log(stateUrl, 'stateUrl');
+  const { redirect : redirectRes, loading : redirectLoading, error : redirectError } = redirectState;
+  console.log(redirectRes, 'redirectRes');
 
+  const origin = window.location.origin;
+  
   useEffect(() => {
-   // dispatch(getUrls())
-    console.log(process.env.REACT_APP_BASE_URL);
-    return () => {
+   
+   
+    console.log(origin, "origin");
+    
+    if (redirectRes) {
+      window.location = redirectRes
     }
-  }, [dispatch])
+    return () => {};
+  }, [redirectRes]);
 
   const submitHandler =  (e) => {
     e.preventDefault()
     dispatch(shortenUrl({ longUrl  : url}));
     
+  };
+
+  const redirect = (shortUrl) => {
+    dispatch(redirectUrl(shortUrl));
   };
 
   return (
@@ -57,20 +69,19 @@ const Home = () => {
         <thead>
           <tr>
             <th>Full Url</th>
-            <th>Short Url</th>
-            <th>Clicks</th>
+            <th>Shortened Url</th>
           </tr>
         </thead>
-        {shortenedUrl}
         <tbody>
           <tr>
             <td>
-              <a href={shortenedUrl?.longUrl}>{shortenedUrl?.longUrl}</a>
+              <a href={shortenedUrl?.data?.longUrl}>{shortenedUrl?.data?.longUrl}</a>
             </td>
             <td>
-              <a href={shortenedUrl?.shortenedUrl}>{shortenedUrl?.shortenedUrl}</a>
+              <a onClick={() => redirect(shortenedUrl?.data?.shortenedUrl)} href={shortenedUrl?.data?.longUrl}>
+                { shortenedUrl?.data?.shortenedUrl ? `${origin}/${shortenedUrl?.data?.shortenedUrl}` : ""}
+              </a>
             </td>
-            <td>10</td>
           </tr>
         </tbody>
       </table>

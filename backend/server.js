@@ -13,28 +13,31 @@ const app = express()
 
 app.use(express.json());
 
+app.use(cors());
+
 app.use(urlencoded({
     extended: false
 }))
 
-app.use(cors());
-
 app.use(`/api/v1`, route);
 
-// app.get('/', (req, res) => {
-//     res.json({
-//         message: "success"
-//     })
-// })
 
-// app.post('/shortenUrl', (req, res) => {
-//   res.json({
-//     message: 'success',
-//   });
-// });
+const __dirname = path.resolve();
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')));
+
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')));
+} else {
+  app.get('/', (req, res) => {
+    res.send('server is running');
+  });
+}
 
 const PORT = process.env.PORT
 
 app.listen(PORT, () => {
     console.log(`server started on ${PORT}`)
 })
+
+export default app
